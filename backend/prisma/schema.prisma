@@ -1,0 +1,239 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int                 @id @default(autoincrement())
+  name               String?
+  email              String?             @unique
+  password           String?
+  userType           UserType?
+  studentId          String?             @unique
+  faculty            String?
+  class              String?
+  createdAt          DateTime?
+  updatedAt          DateTime?           @updatedAt
+  kullaniciAdi       String?             @unique
+  tcKimlik           String?             @unique
+  yuklemeNo          Int?
+  danismanId         Int?
+  department         String?
+  girisYapti         Int?
+  muafiyetBasvurular MuafiyetBasvurusu[]
+  basvurular         StajBasvurusu[]
+  danisman           User?               @relation("DanismanOgrenci", fields: [danismanId], references: [id])
+  ogrenciler         User[]              @relation("DanismanOgrenci")
+  sessions           UserSession[]
+
+  capOgrenci         CapUser?            @relation("CapUserOgrenci")
+  capDanisman        CapUser[]           @relation("CapUserDanisman")
+  
+  @@index([userType], map: "user_type_idx")
+  @@index([name], map: "user_name_idx")
+  @@index([faculty, class], map: "user_faculty_class_idx")
+  @@index([userType, name], map: "user_type_name_idx")
+  @@index([danismanId], map: "user_danisman_idx")
+}
+
+model CapUser {
+  id             Int      @id @default(autoincrement())
+
+  // Öğrenci (User tablosundaki id'ye FK)
+  ogrenciId      Int      @unique
+  ogrenci        User?     @relation("CapUserOgrenci", fields: [ogrenciId], references: [id], onDelete: Cascade)
+
+  capBolum       String
+  capDepartman   String
+  capFakulte     String
+  capSinif       String?
+
+  // Danışman (opsiyonel) - User tablosundan referans
+  capDanismanId  Int?
+  capDanisman    User?    @relation("CapUserDanisman", fields: [capDanismanId], references: [id])
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([capBolum], name: "cap_bolum_idx")
+  @@index([capFakulte, capDepartman], name: "cap_fakulte_departman_idx")
+}
+
+model StajDefteri {
+  id                     Int           @id @default(autoincrement())
+  stajBasvurusuId        Int           @unique
+  defterDurumu           DefterDurumu  @default(BEKLEMEDE)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  dosyaYolu              String?
+  fileSize               Int?
+  originalFileName       String?
+  uploadDate             DateTime?
+  danismanOnayTarihi     DateTime?
+  redSebebi              String?
+  sirketDefterOtp        String?
+  sirketDefterOtpExpires DateTime?
+  sirketOnayTarihi       DateTime?
+  danismanAciklama       String?
+  danismanOnayDurumu     Int           @default(0)
+  sirketAciklama         String?
+  sirketOnayDurumu       Int           @default(0)
+  stajBasvurusu          StajBasvurusu @relation(fields: [stajBasvurusuId], references: [id], onDelete: Cascade)
+
+  @@index([defterDurumu], map: "defter_durumu_idx")
+}
+
+model StajBasvurusu {
+  id                       Int                   @id @default(autoincrement())
+  ogrenciId                Int
+  kurumAdi                 String
+  kurumAdresi              String                @db.Text
+  sorumluTelefon           String
+  sorumluMail              String
+  yetkiliAdi               String
+  yetkiliUnvani            String
+  stajTipi                 StajTipi
+  baslangicTarihi          DateTime
+  bitisTarihi              DateTime
+  seciliGunler             String
+  toplamGun                Int
+  saglikSigortasiDurumu    SaglikSigortasiDurumu
+  danismanMail             String
+  transkriptDosyasi        String
+  onayDurumu               OnayDurumu            @default(HOCA_ONAYI_BEKLIYOR)
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+  iptalSebebi              String?               @db.Text
+  sigortaDosyasi           String?
+  turkFirmasi              String?
+  yurtDisi                 String?
+  sirketOtp                String?
+  sirketOtpExpires         DateTime?
+  hizmetDokumu             String?
+  danismanAciklama         String?
+  danismanOnayDurumu       Int                   @default(0)
+  kariyerMerkeziAciklama   String?
+  kariyerMerkeziOnayDurumu Int                   @default(0)
+  sirketAciklama           String?
+  sirketOnayDurumu         Int                   @default(0)
+  
+  // CAP başvuru bilgileri (opsiyonel)
+  isCapBasvuru             Boolean               @default(false)
+  capFakulte               String?
+  capBolum                 String?
+  capDepartman             String?
+  
+  ogrenci   User @relation(fields: [ogrenciId], references: [id], onDelete: Cascade)
+  defter                   StajDefteri?
+
+  @@index([onayDurumu], map: "basvuru_onay_durumu_idx")
+  @@index([kurumAdi], map: "basvuru_kurum_adi_idx")
+  @@index([danismanMail], map: "basvuru_danisman_mail_idx")
+  @@index([stajTipi], map: "basvuru_staj_tipi_idx")
+  @@index([createdAt], map: "basvuru_created_at_idx")
+  @@index([ogrenciId], map: "StajBasvurusu_ogrenciId_fkey")
+}
+
+model MuafiyetBasvurusu {
+  id                 Int        @id @default(autoincrement())
+  ogrenciId          Int
+  sgk4a              String?
+  danismanMail       String
+  onayDurumu         OnayDurumu @default(HOCA_ONAYI_BEKLIYOR)
+  danismanOnayDurumu Int        @default(0)
+  danismanAciklama   String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  
+  // CAP başvuru bilgileri (opsiyonel)
+  isCapBasvuru       Boolean    @default(false)
+  capFakulte         String?
+  capBolum           String?
+  capDepartman       String?
+  
+  ogrenci            User       @relation(fields: [ogrenciId], references: [id], onDelete: Cascade)
+
+  @@index([onayDurumu], map: "basvuru_onay_durumu_idx")
+  @@index([danismanMail], map: "basvuru_danisman_mail_idx")
+  @@index([createdAt], map: "basvuru_created_at_idx")
+  @@index([ogrenciId], map: "MuafiyetBasvurusu_ogrenciId_fkey")
+}
+
+model UserSession {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  sessionId  String   @unique
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  lastAccess DateTime @default(now())
+  userAgent  String?
+  ipAddress  String?
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([expiresAt], map: "session_expires_at_idx")
+}
+
+model YuklenenDosya {
+  id              Int       @id @default(autoincrement())
+  dosyaAdi        String
+  dosyaTipi       String
+  dosyaYolu       String
+  durumu          String    @default("ISLENIYOR")
+  toplamSatir     Int       @default(0)
+  islenenSatir    Int       @default(0)
+  basariliSatir   Int       @default(0)
+  hataliSatir     Int       @default(0)
+  hataMesaji      String?   @db.Text
+  yuklenenTarih   DateTime  @default(now())
+  tamamlanmaTarih DateTime?
+
+  @@index([dosyaTipi], map: "yuklenen_dosya_tipi_idx")
+  @@index([durumu], map: "yuklenen_dosya_durumu_idx")
+}
+
+enum UserType {
+  OGRENCI
+  DANISMAN
+  KARIYER_MERKEZI
+  YONETICI
+}
+
+enum OnayDurumu {
+  HOCA_ONAYI_BEKLIYOR
+  KARIYER_MERKEZI_ONAYI_BEKLIYOR
+  SIRKET_ONAYI_BEKLIYOR
+  ONAYLANDI
+  REDDEDILDI
+  IPTAL_EDILDI
+}
+
+enum DefterDurumu {
+  BEKLEMEDE
+  SIRKET_ONAYI_BEKLIYOR
+  SIRKET_REDDETTI
+  DANISMAN_ONAYI_BEKLIYOR
+  DANISMAN_REDDETTI
+  ONAYLANDI
+  REDDEDILDI
+}
+
+enum SaglikSigortasiDurumu {
+  ALIYORUM
+  ALMIYORUM
+}
+
+enum StajTipi {
+  IMU_402
+  IMU_404
+  MESLEKI_EGITIM_UYGULAMALI_DERS
+  ISTEGE_BAGLI_STAJ
+  ZORUNLU_STAJ
+}

@@ -1,0 +1,21 @@
+# Node modules & build output
+node_modules/
+dist/
+build/
+*.log
+
+# Env files
+.env
+.env.*
+
+# OS/IDE files
+.vscode/
+.idea/
+.DS_Store
+
+coverage/
+*.lcov
+
+*.tgz
+*.bak
+*.zip

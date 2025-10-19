@@ -1,0 +1,67 @@
+services:
+  db:
+    image: docker.io/mariadb:latest
+    container_name: mariadb_server
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1235 
+      MYSQL_DATABASE: staj
+      MYSQL_USER: staj
+      MYSQL_PASSWORD: 1235
+    ports:
+      - "3333:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: docker.io/phpmyadmin:latest
+    container_name: phpmyadmin_ui
+    restart: always
+    ports:
+      - "9090:80"
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 10G
+    depends_on:
+      - db
+  redis:
+    image: docker.io/redis:latest
+    container_name: redis_server
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mongo:
+    image: docker.io/mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db  
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: staj
+      MONGO_INITDB_ROOT_PASSWORD: 1235
+
+  mongo-express:
+    image: docker.io/mongo-express
+    restart: always
+    ports:
+      - 9091:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: staj
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 1235
+      ME_CONFIG_MONGODB_URL: mongodb://staj:1235@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+  mailhog:   
+   image: docker.io/mailhog/mailhog
+   container_name: 'mailhog'
+   ports:
+     - "1025:1025"
+     - "8025:8025"
+volumes:
+  db_data:
+  mongo_data:  
+  redis_data:
+

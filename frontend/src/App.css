@@ -1,0 +1,103 @@
+@import "tailwindcss";
+* {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+}
+
+/* input.css */
+@import "tailwindcss";
+
+@theme {
+  /* Primary brand color - Dark Red/Maroon from the sidebar */
+  --color-primary-50: #fdf2f2; /* A very light tint */
+  --color-primary-100: #fde8e8;
+  --color-primary-200: #fbd5d5;
+  --color-primary-300: #f8b4b4;
+  --color-primary-400: #f98080;
+  --color-primary-500: #e02424; /* Close to the dark red in the image */
+  --color-primary-600: #bf125d; /* Slightly darker */
+  --color-primary-700: #a41052;
+  --color-primary-800: #890c47;
+  --color-primary-900: #70093a;
+  --color-primary-950: #4a0525;
+
+
+  /* Background color - Light Gray/Off-white */
+  --color-background-50: #ffffff; /* Pure white for elements */
+  --color-background-100: #f9fafb; /* The main background of the page */
+  --color-background-200: #f3f4f6;
+  --color-background-300: #e5e7eb;
+
+
+  /* Accent Blue (from "Talep Et" button and links) */
+  --color-accent-blue-50: #eef2ff;
+  --color-accent-blue-100: #e0e7ff;
+  --color-accent-blue-200: #c7d2fe;
+  --color-accent-blue-300: #a5b4fc;
+  --color-accent-blue-400: #818cf8;
+  --color-accent-blue-500: #6366f1; /* Similar to the button blue */
+  --color-accent-blue-600: #4f46e5;
+  --color-accent-blue-700: #4338ca;
+  --color-accent-blue-800: #3730a3;
+  --color-accent-blue-900: #312e81;
+
+
+  /* Accent Green (from "Takip Et" button and "Hoş Geldiniz" text) */
+  --color-accent-green-50: #f0fdf4;
+  --color-accent-green-100: #dcfce7;
+  --color-accent-green-200: #bbf7d0;
+  --color-accent-green-300: #86efac;
+  --color-accent-green-400: #4ade80;
+  --color-accent-green-500: #22c55e; /* Similar to the button green */
+  --color-accent-green-600: #16a34a;
+  --color-accent-green-700: #15803d;
+  --color-accent-green-800: #166534;
+  --color-accent-green-900: #14532d;
+
+
+  /* Accent Orange (from "Kullanım Kılavuzu" card) */
+  --color-accent-orange-50: #fff7ed;
+  --color-accent-orange-100: #ffedd5;
+  --color-accent-orange-200: #fed7aa;
+  --color-accent-orange-300: #fdba74;
+  --color-accent-orange-400: #fb923c;
+  --color-accent-orange-500: #f97316; /* Similar to the icon/border */
+  --color-accent-orange-600: #ea580c;
+  --color-accent-orange-700: #c2410c;
+  --color-accent-orange-800: #9a3412;
+  --color-accent-orange-900: #7c2d12;
+
+
+  /* Accent Purple (from "Onay Bekleyen Etkinlikler" card) */
+  --color-accent-purple-50: #f5f3ff;
+  --color-accent-purple-100: #ede9fe;
+  --color-accent-purple-200: #ddd6fe;
+  --color-accent-purple-300: #c4b5fd;
+  --color-accent-purple-400: #a78bfa;
+  --color-accent-purple-500: #8b5cf6; /* Similar to the icon/border */
+  --color-accent-purple-600: #7c3aed;
+  --color-accent-purple-700: #6d28d9;
+  --color-accent-purple-800: #5b21b6;
+  --color-accent-purple-900: #4c1d95;
+
+
+  /* Accent Cyan/Teal (from "Kurum Etkinlikleri" card) */
+  --color-accent-cyan-50: #f0fdfa;
+  --color-accent-cyan-100: #ccfbf1;
+  --color-accent-cyan-200: #99f6e4;
+  --color-accent-cyan-300: #5eead4;
+  --color-accent-cyan-400: #2dd4bf;
+  --color-accent-cyan-500: #14b8a6; /* Similar to the icon/border */
+  --color-accent-cyan-600: #0d9488;
+  --color-accent-cyan-700: #0f766e;
+  --color-accent-cyan-800: #115e59;
+  --color-accent-cyan-900: #134e4a;
+
+  /* Text Colors */
+  --color-text-dark: #1f2937; /* Very dark gray for main text */
+  --color-text-light: #6b7280; /* Lighter gray for secondary text */
+}
+
+.bg-block-grid {
+  background-color: var(--color-background-100);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(229 231 235 / 0.5)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
