@@ -1,6 +1,6 @@
 # StajKontrol - Öğrenci Staj Yönetim Sistemi
 
-Modern web teknolojileriyle geliştirilmiş kapsamlı bir **öğrenci staj yönetim sistemi**dir. Sistem; staj başvuruları, belge yönetimi, firma onay süreçleri ve idari denetim için işlevler sunar.
+Modern web teknolojileriyle geliştirilmiş kapsamlı bir **öğrenci staj yönetim sistemi**dir.  Sistem; staj başvuruları, belge yönetimi, firma onay süreçleri ve idari denetim için işlevler sunar.
 
 ## 🚀 Teknoloji Yığını
 
@@ -19,7 +19,7 @@ Modern web teknolojileriyle geliştirilmiş kapsamlı bir **öğrenci staj yöne
 - **Doğrulama**: Zod
 
 ### Frontend
-- **Framework**: React 19 (TypeScript ile)
+- **Framework**: ReactJS (TypeScript ile)
 - **Derleme Aracı**: Vite
 - **Stil**: TailwindCSS
 - **Yönlendirme**: React Router DOM
