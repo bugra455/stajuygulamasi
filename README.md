@@ -1,6 +1,7 @@
 # StajKontrol - Öğrenci Staj Yönetim Sistemi
 
 Modern web teknolojileriyle geliştirilmiş kapsamlı bir **öğrenci staj yönetim sistemi**dir.  Sistem; staj başvuruları, belge yönetimi, firma onay süreçleri ve idari denetim için işlevler sunar.
+Kullanılmasından vazgeçildiği için hurdaya çıkartıldı, umarım inceleyecek kişiye de güzel bir kaynak olur.
 
 ## 🚀 Teknoloji Yığını
 
